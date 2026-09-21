@@ -1,4 +1,4 @@
--- Oyeboost initial schema
+-- Amplibee initial schema
 -- Conventions: uuid primary keys, created_at/updated_at on every table,
 -- RLS enabled everywhere, users can only read/write rows they own.
 
@@ -244,7 +244,7 @@ create policy "workflow_steps_delete_own" on workflow_steps for delete using (
 );
 
 -- =========================================================================
--- source_posts — the original input a user brought into Oyeboost.
+-- source_posts — the original input a user brought into Amplibee.
 -- =========================================================================
 create table source_posts (
   id uuid primary key default gen_random_uuid(),

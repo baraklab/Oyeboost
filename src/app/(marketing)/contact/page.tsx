@@ -8,7 +8,7 @@ import { siteConfig } from "@/lib/seo/config";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact",
-  description: "Get in touch with the Oyeboost team — questions, feedback, or partnership inquiries.",
+  description: "Get in touch with the Amplibee team — questions, feedback, or partnership inquiries.",
   path: "/contact",
 });
 
@@ -19,7 +19,7 @@ export default function ContactPage() {
         data={[
           webPageJsonLd({
             title: "Contact",
-            description: "Get in touch with the Oyeboost team.",
+            description: "Get in touch with the Amplibee team.",
             path: "/contact",
             type: "ContactPage",
           }),

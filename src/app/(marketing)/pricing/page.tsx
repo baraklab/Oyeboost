@@ -70,7 +70,7 @@ const faqs = [
   {
     question: "What does 'Bring Your Own Key' mean for billing?",
     answer:
-      "Oyeboost's plans cover the product itself. AI generation calls use your own OpenAI, Anthropic, or OpenRouter API key, billed directly by that provider — we don't mark up token usage.",
+      "Amplibee's plans cover the product itself. AI generation calls use your own OpenAI, Anthropic, or OpenRouter API key, billed directly by that provider — we don't mark up token usage.",
   },
   {
     question: "Can I change plans later?",
@@ -104,7 +104,7 @@ export default function PricingPage() {
             Simple pricing. Bring your own AI key.
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-[15px] text-muted-foreground">
-            You pay Oyeboost for the product. You pay your AI provider for generation, at their
+            You pay Amplibee for the product. You pay your AI provider for generation, at their
             rates, with your own key.
           </p>
         </div>

@@ -1,13 +1,13 @@
 export const siteConfig = {
-  name: "Oyeboost",
+  name: "Amplibee",
   tagline: "Marketing muscle for your products.",
   description:
-    "Oyeboost turns one post into platform-native content for X, LinkedIn, Medium, and Substack, and generates backlinks for every launch.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://oyeboost.com",
+    "Amplibee turns one post into platform-native content for X, LinkedIn, Medium, and Substack, and generates backlinks for every launch.",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://amplibee.com",
   locale: "en_US",
   twitterHandle: "@baraklabs",
   keywords: [
-    "Oyeboost",
+    "Amplibee",
     "product launch marketing",
     "cross-posting tool",
     "content repurposing",
@@ -21,7 +21,7 @@ export const siteConfig = {
     "bring your own AI key",
   ],
   company: "Baraklabs",
-  contactEmail: "info@oyeboost.com",
+  contactEmail: "info@amplibee.com",
   links: {
     x: "https://x.com/baraklabs",
     linkedin: "https://www.linkedin.com/company/baraklabs",

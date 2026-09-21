@@ -1,4 +1,4 @@
-# Oyeboost
+# Amplibee
 
 ## Stack
 
