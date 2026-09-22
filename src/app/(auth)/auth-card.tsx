@@ -43,6 +43,7 @@ export function AuthCard({ initialMode }: { initialMode: Mode }) {
   const [showPassword, setShowPassword] = React.useState(false);
   const [errors, setErrors] = React.useState<{ name?: string; email?: string; password?: string; form?: string }>({});
   const [submitting, setSubmitting] = React.useState(false);
+  const [googleValidating, setGoogleValidating] = React.useState(false);
   const [pendingVerification, setPendingVerification] = React.useState(false);
 
   function flipTo(next: Mode) {
@@ -129,6 +130,8 @@ export function AuthCard({ initialMode }: { initialMode: Mode }) {
             setShowPassword={setShowPassword}
             errors={errors}
             submitting={submitting}
+            googleValidating={googleValidating}
+            setGoogleValidating={setGoogleValidating}
             onSubmit={onSubmit}
             onToggle={() => flipTo("signup")}
             onForgot={flipToForgot}
@@ -152,6 +155,8 @@ export function AuthCard({ initialMode }: { initialMode: Mode }) {
               setShowPassword={setShowPassword}
               errors={errors}
               submitting={submitting}
+              googleValidating={googleValidating}
+              setGoogleValidating={setGoogleValidating}
               onSubmit={onSubmit}
               onToggle={() => flipTo("signin")}
             />
@@ -175,6 +180,8 @@ function AuthFace({
   setShowPassword,
   errors,
   submitting,
+  googleValidating,
+  setGoogleValidating,
   onSubmit,
   onToggle,
   onForgot,
@@ -191,12 +198,15 @@ function AuthFace({
   setShowPassword: (fn: (prev: boolean) => boolean) => void;
   errors: { name?: string; email?: string; password?: string; form?: string };
   submitting: boolean;
+  googleValidating: boolean;
+  setGoogleValidating: (v: boolean) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   onToggle: () => void;
   onForgot?: () => void;
 }) {
   const copy = COPY[mode];
   const inert = active ? {} : { tabIndex: -1, "aria-hidden": true as const };
+  const formDisabled = active && googleValidating;
 
   return (
     <div className="auth-card rounded-lg border border-border bg-card p-7 shadow-sm">
@@ -222,6 +232,7 @@ function AuthFace({
               autoComplete="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              disabled={formDisabled}
               {...inert}
             />
             {active && errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
@@ -237,6 +248,7 @@ function AuthFace({
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={formDisabled}
             {...inert}
           />
           {active && errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
@@ -265,6 +277,7 @@ function AuthFace({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="pr-10"
+              disabled={formDisabled}
               {...inert}
             />
             <button
@@ -280,8 +293,14 @@ function AuthFace({
           {active && errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
         </div>
 
-        <Button type="submit" loading={active && submitting} className="mt-1" {...inert}>
-          {active && submitting ? copy.submittingLabel : copy.submitLabel}
+        <Button
+          type="submit"
+          loading={active && (submitting || googleValidating)}
+          disabled={formDisabled}
+          className="mt-1"
+          {...inert}
+        >
+          {active && (submitting || googleValidating) ? copy.submittingLabel : copy.submitLabel}
         </Button>
       </form>
 
@@ -291,7 +310,7 @@ function AuthFace({
         <div className="h-px flex-1 bg-border" />
       </div>
 
-      <GoogleButton />
+      <GoogleButton disabled={active && submitting} onValidatingChange={setGoogleValidating} />
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
         {copy.toggleHint}{" "}

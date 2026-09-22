@@ -52,3 +52,8 @@ entrypoint = "./functions/auth-forgot-password/index.ts"
 enabled = true
 verify_jwt = false
 entrypoint = "./functions/auth-reset-password/index.ts"
+
+[functions.health]
+enabled = true
+verify_jwt = false
+entrypoint = "./functions/health/index.ts"

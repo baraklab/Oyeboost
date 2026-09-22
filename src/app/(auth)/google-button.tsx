@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { signInWithGoogle } from "./actions";
 
 declare global {
@@ -58,27 +60,45 @@ function loadGsiScript(): Promise<void> {
 // on its own DOM node; only the very first instance actually calls initialize().
 let gsiInitialized = false;
 
-export function GoogleButton() {
+export function GoogleButton({
+  disabled = false,
+  onValidatingChange,
+}: {
+  disabled?: boolean;
+  onValidatingChange?: (validating: boolean) => void;
+}) {
   const router = useRouter();
   const buttonRef = React.useRef<HTMLDivElement>(null);
   const [error, setError] = React.useState<string>();
+  const [validating, setValidating] = React.useState(false);
+
+  const setValidatingState = React.useCallback(
+    (value: boolean) => {
+      setValidating(value);
+      onValidatingChange?.(value);
+    },
+    [onValidatingChange],
+  );
 
   const handleCredential = React.useCallback(
     async (response: { credential: string }) => {
       setError(undefined);
+      setValidatingState(true);
       const result = await signInWithGoogle(response.credential);
       if (!result.ok) {
+        setValidatingState(false);
         setError(result.error);
         return;
       }
       if (result.requiresVerification) {
+        setValidatingState(false);
         router.push("/login");
         return;
       }
       router.push("/dashboard");
       router.refresh();
     },
-    [router],
+    [router, setValidatingState],
   );
 
   React.useEffect(() => {
@@ -112,9 +132,22 @@ export function GoogleButton() {
   // See env/dev.env's NEXT_PUBLIC_GOOGLE_CLIENT_ID for setup.
   if (!CLIENT_ID) return null;
 
+  const inactive = disabled || validating;
+
   return (
     <div>
-      <div ref={buttonRef} className="flex w-full justify-center" />
+      <div className="relative">
+        <div
+          ref={buttonRef}
+          className={cn("flex w-full justify-center", inactive && "pointer-events-none opacity-50")}
+        />
+        {validating && (
+          <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-md border border-border bg-card text-sm text-muted-foreground">
+            <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            Validating…
+          </div>
+        )}
+      </div>
       {error && (
         <p className="mt-2 text-center text-sm text-destructive" role="alert">
           {error}

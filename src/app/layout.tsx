@@ -4,6 +4,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { JsonLd } from "@/components/seo/json-ld";
 import { CookieBanner } from "@/components/marketing/cookie-banner";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { HealthCheck } from "@/components/health-check";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { siteConfig } from "@/lib/seo/config";
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </Script>
         <GoogleAnalytics />
         <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
+        <HealthCheck />
         {children}
         <CookieBanner />
       </body>
