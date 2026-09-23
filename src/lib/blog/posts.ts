@@ -28,6 +28,395 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "why-fake-engagement-kills-your-launch-and-what-to-do-instead",
+    title: "Why Fake Engagement Kills Your Launch (and What to Do Instead)",
+    description:
+      "Bought followers, vote manipulation, and bot engagement get detected, erode trust, and trigger algorithmic penalties. Here's what genuine influencer marketing does differently.",
+    author: "Amplibee Team",
+    date: "2026-09-21",
+    color: "#059669",
+    category: "Marketing",
+    tags: ["fake engagement", "genuine marketing", "trust", "platform detection"],
+    readingTime: "11 min read",
+    thumbnail: "/images/blog/why-fake-engagement-kills-your-launch-and-what-to-do-instead/bots-out-genuine-reach-in-og.png",
+    body: [
+      {
+        type: "text",
+        content:
+          "**The short answer:** fake engagement — bought followers, upvote rings, bot comments, purchased stars — gets detected by the platforms hosting it, gets purged after the fact rather than before, and permanently damages the trust of the real audience who eventually notices. Genuine influencer marketing avoids all three failure modes because there's no manufactured number to detect or purge — just real people telling their real audience about something worth telling them about, which is the entire model [Amplibee](/) is built around.",
+      },
+      {
+        type: "text",
+        content:
+          "Every founder under launch pressure has seen the ad: a few hundred dollars for a thousand followers, upvotes, or stars, delivered within 24 hours. It's tempting precisely because the pressure is real and the offer looks like a shortcut through it. This is a breakdown of why that shortcut fails on every axis that actually matters, and what to do with the same budget and urgency instead.",
+      },
+      {
+        type: "heading",
+        content: "Failure mode 1: platform detection",
+      },
+      {
+        type: "text",
+        content:
+          "Every major platform — X, LinkedIn, YouTube, Instagram, GitHub, Product Hunt — runs abuse detection specifically built to catch inorganic engagement patterns: accounts created in bulk, engagement spiking in a tight time window, follower graphs with no organic structure, comment text that repeats across unrelated posts. This isn't a hypothetical risk; it's a standing, adversarial system actively looking for exactly what a bought-engagement service produces.",
+      },
+      {
+        type: "text",
+        content:
+          "The failure isn't always immediate. Bulk purges often happen weeks or months later, which means the damage lands at the worst possible time — after you've built plans, reporting, or investor updates around a number that's about to disappear.",
+      },
+      {
+        type: "list",
+        items: [
+          "**X/Twitter** actively removes bot and spam accounts in periodic sweeps, which can visibly drop a follower count overnight.",
+          "**GitHub** flags and removes inorganic stars from accounts showing bulk-creation and no-activity patterns — sometimes well after the fact.",
+          "**Product Hunt** has a well-documented history of removing manipulated votes and penalizing products caught coordinating them, including removal from leaderboards.",
+          "**YouTube and Instagram** both algorithmically deprioritize accounts with engagement-to-follower ratios that don't match organic patterns, which can suppress reach even without an explicit ban.",
+        ],
+      },
+      {
+        type: "heading",
+        content: "Failure mode 2: audience trust erosion",
+      },
+      {
+        type: "text",
+        content:
+          "Detection is a platform problem. Trust erosion is a people problem, and it's worse, because it doesn't reverse when you stop. Audiences — developers evaluating a library, consumers reading reviews, investors looking at traction — have gotten good at spotting the signature of manufactured engagement: round numbers, engagement that doesn't match comment quality, a launch with thousands of upvotes and zero substantive discussion.",
+      },
+      {
+        type: "text",
+        content:
+          "Once a specific instance of fake engagement gets called out publicly — and in tight-knit communities like open source or indie SaaS, it usually does — it doesn't just cost that number. It recolors every other number the project has ever shown, retroactively. A skeptical audience doesn't say \"well, most of it was real\" — they assume the worst about everything else too.",
+      },
+      {
+        type: "quote",
+        content:
+          "The reason bought engagement feels like a shortcut is the same reason it's not one: it skips the part where a real person decides your product was worth telling someone about. That decision is the entire value. There's no way to fake it that doesn't also fake the reason it mattered.",
+      },
+      {
+        type: "heading",
+        content: "Failure mode 3: algorithmic penalties",
+      },
+      {
+        type: "text",
+        content:
+          "Beyond outright detection and removal, most platform algorithms use engagement-quality signals — not just engagement volume — to decide what to amplify further. Content that gets a burst of low-quality engagement (bot likes, template comments, follows from accounts with no history) often gets throttled rather than boosted, because the platform's own model reads the pattern as spam regardless of intent.",
+      },
+      {
+        type: "text",
+        content:
+          "This means fake engagement doesn't just risk a future purge — it can actively suppress the real reach you'd otherwise have gotten from the launch, at the exact moment reach matters most.",
+      },
+      {
+        type: "heading",
+        content: "Failure mode 4: brand damage that outlasts the campaign",
+      },
+      {
+        type: "text",
+        content:
+          "The first three failure modes are mostly reversible in the sense that a project can recover technically — a purged follower count can be rebuilt, an algorithmic penalty can lift. Brand damage is the one that lingers, because it lives in people's memory of your name, not in a platform's database. A founder or maintainer caught buying engagement once carries that association into their next product, their next repo, their next launch — long after the specific numbers in question have been forgotten.",
+      },
+      {
+        type: "heading",
+        content: "What genuine influencer marketing does instead",
+      },
+      {
+        type: "text",
+        content:
+          "The alternative isn't \"do nothing and hope for organic reach.\" It's routing the same budget and urgency toward real people with real audiences who choose, genuinely, to tell their followers about your product — see [how to run an influencer campaign for a SaaS launch](/blog/how-to-run-an-influencer-marketing-campaign-for-your-saas-launch) for the practical steps. The mechanism looks similar on the surface (someone posts about your product, people see it, some of them act) but every property that made bought engagement fail is the exact property genuine influencer marketing gets right.",
+      },
+      {
+        type: "table",
+        caption: "Bought engagement vs. genuine influencer marketing",
+        headers: ["", "Bought engagement", "Genuine influencer marketing"],
+        rows: [
+          ["Platform detection risk", "High — actively targeted by abuse systems", "None — every action is a real account, real activity"],
+          ["Audience trust if discovered", "Destroyed, retroactively", "N/A — nothing to discover, it's genuinely their opinion"],
+          ["Algorithmic treatment", "Often throttled as spam", "Treated as normal organic engagement"],
+          ["Durability", "Purged eventually, often without warning", "Persists — a real post stays real"],
+          ["Attribution", "None — a number with no source", "Per-influencer tracked links show what worked"],
+        ],
+      },
+      {
+        type: "text",
+        content:
+          "This is the core design decision behind Amplibee: every profile in the [network](/network) is a real, opted-in influencer or creator, every campaign is matched by genuine niche fit, the AI [drafts talking points, never a script](/features/campaign-brief-generator) so what gets posted stays in the influencer's real voice, and [every deliverable is reviewed](/features/review-every-deliverable) before it counts — the same discipline that keeps bots and templated spam out is what keeps the resulting engagement genuinely worth having.",
+      },
+      {
+        type: "heading",
+        content: "If you've already used bought engagement",
+      },
+      {
+        type: "text",
+        content:
+          "If a past launch leaned on a star-farm, a follower package, or an upvote ring, the fix isn't panic — it's redirecting forward. Stop adding to the inflated number, let organic and genuine activity become a larger share of the total over time, and be straightforward if anyone asks rather than compounding the original mistake with a defensive explanation. The audience you actually want going forward cares far more about what you do next than about a number from a launch they've already forgotten.",
+      },
+      { type: "newsletter" },
+      {
+        type: "heading",
+        content: "Frequently asked questions",
+      },
+      {
+        type: "faq",
+        items: [
+          {
+            question: "Do platforms actually detect bought followers or engagement?",
+            answer:
+              "Yes. X, GitHub, Product Hunt, YouTube, and Instagram all run abuse-detection systems that flag inorganic patterns — bulk account creation, engagement spikes in tight time windows, follower graphs with no organic structure — and remove the resulting engagement, sometimes in delayed bulk purges.",
+          },
+          {
+            question: "Can bought engagement hurt my reach even if it isn't removed?",
+            answer:
+              "Yes. Many platform algorithms weigh engagement quality, not just volume, when deciding what to amplify. A burst of low-quality engagement can get content throttled as suspected spam rather than boosted, suppressing the real reach a launch would otherwise have gotten.",
+          },
+          {
+            question: "Is it worth the risk to buy engagement just for a launch day boost?",
+            answer:
+              "No — the risk isn't limited to launch day. Purges often happen weeks or months later, and if discovered, the trust damage extends backward to every other number the project has shown, not just the inflated one.",
+          },
+          {
+            question: "What's the genuine alternative to buying followers or stars?",
+            answer:
+              "Influencer marketing matched by real niche fit — real creators with real audiences who genuinely choose to post about your product in their own voice, with every deliverable reviewed before it counts toward results.",
+          },
+          {
+            question: "How is Amplibee different from a service that sells followers or stars?",
+            answer:
+              "Amplibee has no mechanism to sell engagement directly — it matches product owners with real, opted-in influencers whose audience fits the campaign's niche, and reviews every submitted deliverable before it counts, so results reflect genuine posts to genuine audiences.",
+          },
+          {
+            question: "What should I do if a past launch already used bought engagement?",
+            answer:
+              "Stop adding to it, let genuine activity become a larger share of your numbers going forward, and be straightforward if asked rather than compounding it with a defensive explanation — audiences care more about what you do next than a number from a launch they've likely already forgotten.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "how-to-get-genuine-github-stars-through-influencer-marketing",
+    title: "How to Get Genuine GitHub Stars Through Influencer Marketing (Not Bots)",
+    description:
+      "Bought stars get purged and erode trust the moment anyone checks. Here's the real playbook for earning GitHub stars that actually mean something.",
+    author: "Amplibee Team",
+    date: "2026-09-15",
+    color: "#4f46e5",
+    category: "Growth",
+    tags: ["github stars", "open source", "influencer marketing", "developer marketing"],
+    readingTime: "13 min read",
+    thumbnail: "/images/blog/how-to-get-genuine-github-stars-through-influencer-marketing/real-developers-real-stars-og.png",
+    body: [
+      {
+        type: "text",
+        content:
+          "**The short answer:** the fastest reliable way to grow GitHub stars that don't get purged, don't get flagged, and actually correlate with real usage is to get real developers with real audiences to genuinely try your repo and tell their followers about it — not to buy stars from a star-farm service. [Amplibee](/) does this by matching your repo with influencers and creators on X, LinkedIn, and YouTube whose audience already cares about the exact problem your project solves.",
+      },
+      {
+        type: "text",
+        content:
+          "If you've ever searched \"buy GitHub stars\" at 1am before a launch, you're not alone — and you're also about to read why that search is the wrong one. This guide covers why bought stars actively hurt you, how GitHub and the wider ecosystem detect them, and a real, repeatable playbook for earning stars that reflect actual interest in what you built.",
+      },
+      {
+        type: "heading",
+        content: "Why bought GitHub stars don't work anymore (if they ever really did)",
+      },
+      {
+        type: "text",
+        content:
+          "A star-farm sells you a number. It does not sell you users, contributors, issues filed by people who hit a real bug, or the kind of organic discovery that gets a repo onto a trending page for the right reasons. The number is the entire product — and numbers without behavior behind them are exactly what gets flagged.",
+      },
+      {
+        type: "list",
+        items: [
+          "**GitHub actively detects and removes inorganic stars.** Accounts created in bulk, with no commit history, no followed repos, and a starring pattern that spikes in a tight time window get caught by abuse detection — sometimes immediately, sometimes months later in a bulk purge. When that happens, your count drops publicly, which reads worse than never having inflated it.",
+          "**Developers check.** Anyone seriously evaluating a library looks past the star count — recent commits, issue response time, who's starring it (are they real accounts with real projects?), and whether the README reads like it was written by someone who ships. A high star count with a thin commit history and generic-looking stargazers is a red flag experienced developers recognize instantly.",
+          "**It doesn't compound.** A genuine star from a developer who actually uses your tool often comes with a follow, a mention in their own project's README, a conference talk reference, or a PR down the line. A bought star is a dead end — it never becomes anything else.",
+          "**It actively damages trust once discovered.** Nothing torches credibility with an open-source audience faster than the community discovering a project bought its numbers. It's the kind of story that gets its own thread, and it follows the maintainer to their next project too.",
+        ],
+      },
+      {
+        type: "text",
+        content:
+          "None of this is about GitHub stars being unimportant — they're a real, useful signal, which is exactly why faking them is such a bad trade. You're spending real money to manufacture a number that becomes a liability instead of an asset.",
+      },
+      {
+        type: "heading",
+        content: "What actually drives genuine GitHub star growth",
+      },
+      {
+        type: "text",
+        content:
+          "Real star growth almost always traces back to a person with an audience trying your project and telling people about it — a maintainer posting a demo, a YouTuber covering a new tool in their niche, a newsletter writer including it in a roundup, a conference speaker mentioning it live. The mechanism is word of mouth, just distributed through people who already have reach.",
+      },
+      {
+        type: "text",
+        content:
+          "That's the entire premise behind influencer marketing for open source: instead of hoping the right person organically finds your repo, you brief a campaign, and creators whose audience already cares about your exact category discover it and post about it genuinely — see [how the network match works](/features/influencer-network) for how that discovery happens.",
+      },
+      {
+        type: "subheading",
+        content: "The developer-audience creators worth reaching",
+      },
+      {
+        type: "list",
+        items: [
+          "**X/Twitter developers who post build-in-public content** — they're already primed to try new tools and share honest reactions with a technically literate audience.",
+          "**YouTube channels covering dev tools, frameworks, or your specific stack** — a real walkthrough video does more for adoption than almost any other content format, because viewers see the tool actually working.",
+          "**LinkedIn voices in your category** — especially for developer tools with a business-adjacent angle (DevOps, data infrastructure, internal tooling), where a technical leader's post reaches people with budget and influence over adoption, not just individual contributors.",
+          "**Newsletter and roundup writers** — inclusion in a well-read weekly roundup is slower than a single viral post, but the traffic is durable and the stars trickle in for weeks.",
+        ],
+      },
+      {
+        type: "heading",
+        content: "The playbook: running a genuine GitHub star campaign",
+      },
+      {
+        type: "subheading",
+        content: "1. Get the repo itself ready for a first impression",
+      },
+      {
+        type: "text",
+        content:
+          "Before you brief anyone, make sure the thing they'll actually look at earns the star. A clear README with a real problem statement in the first three lines, a working quickstart that doesn't require reading the whole codebase first, and a couple of screenshots or a short GIF if it's visual. Influencers won't manufacture credibility your repo doesn't have — they amplify what's actually there.",
+      },
+      {
+        type: "text",
+        content:
+          "**Action:** Read your own README as if you'd never seen the project. If it takes more than thirty seconds to understand what problem it solves, fix that first.",
+      },
+      {
+        type: "subheading",
+        content: "2. Set up a product profile and brief the campaign",
+      },
+      {
+        type: "text",
+        content:
+          "Create a [product profile](/features/product-profile) for the repo — what it does, who it's for, what makes it worth a genuine mention, and any facts that should stay consistent (star count, license, notable users). Then brief a campaign with the goal set to GitHub stars. The [campaign brief generator](/features/campaign-brief-generator) drafts suggested talking points per channel from that profile — a thread angle for X, a demo outline for YouTube — as a starting point influencers adapt into their own voice.",
+      },
+      {
+        type: "text",
+        content:
+          "**Action:** Be specific in the brief about the actual problem the repo solves and who feels that problem most acutely — vague briefs produce vague, easy-to-ignore talking points.",
+      },
+      {
+        type: "subheading",
+        content: "3. Let the network match you with the right influencers",
+      },
+      {
+        type: "text",
+        content:
+          "A GitHub-stars campaign should reach developer-audience creators specifically, not a broad, undifferentiated influencer list. In the [network](/network), influencers list their niches — this is what makes matching work: a campaign for a Rust CLI tool should surface to systems-programming creators, not lifestyle influencers, and a campaign for a no-code integration should surface to a very different set of accounts.",
+      },
+      {
+        type: "text",
+        content:
+          "**Action:** Check who's applying to or matched with your campaign before assuming reach equals fit — a smaller creator whose audience is exactly your target user is worth more than a large one whose audience isn't.",
+      },
+      {
+        type: "subheading",
+        content: "4. Review every deliverable before it counts",
+      },
+      {
+        type: "text",
+        content:
+          "When an influencer posts, they submit their deliverable link as proof. [Every submission gets reviewed](/features/review-every-deliverable) — is it live, does it genuinely engage with the project, does it read like a real developer's take rather than a copy-pasted script. This is the step that keeps a genuine campaign genuine: it's the same discipline that keeps bots and templated spam out of your results.",
+      },
+      {
+        type: "text",
+        content:
+          "**Action:** Actually read what influencers post, not just whether they posted. A short, honest reaction from a relevant developer often drives more real interest than a longer, generic mention.",
+      },
+      {
+        type: "subheading",
+        content: "5. Track what each deliverable actually drove",
+      },
+      {
+        type: "text",
+        content:
+          "Every influencer gets a [tracked link](/features/tracked-campaign-links) with UTM parameters, so you can see which specific post, video, or thread drove clicks back to your repo — and correlate that with your actual star growth over the following days. This is the data bought stars can never give you: a real signal about which creators, angles, and channels actually move a technical audience.",
+      },
+      {
+        type: "text",
+        content:
+          "**Action:** After a campaign, look at which influencer's link drove the most qualified traffic (not just clicks) and consider working with them again on your next release.",
+      },
+      {
+        type: "heading",
+        content: "Manufactured stars vs. genuine influencer-driven stars",
+      },
+      {
+        type: "table",
+        caption: "What you're actually buying",
+        headers: ["", "Bought stars", "Genuine influencer campaign"],
+        rows: [
+          ["Risk of removal", "High — bulk purges happen without warning", "None — stars come from real accounts acting genuinely"],
+          ["Correlates with real usage", "No", "Yes — driven by developers who actually looked at the repo"],
+          ["Compounds over time", "No — a dead-end number", "Often — follows, mentions, contributors, talk references"],
+          ["Reputational risk if discovered", "Severe — damages trust in the maintainer", "None — it's how open source has always grown"],
+          ["Attribution and learning", "None", "Per-influencer tracked links show what actually worked"],
+        ],
+      },
+      {
+        type: "quote",
+        content:
+          "A star count is supposed to be a proxy for real interest. The moment you fake the proxy, you've thrown away the only reason it was ever worth having.",
+      },
+      {
+        type: "heading",
+        content: "What good looks like: a realistic campaign shape",
+      },
+      {
+        type: "text",
+        content:
+          "A well-run GitHub-stars campaign for a mid-sized open-source project typically involves a handful of relevant creators rather than dozens of generic ones. One or two X developers posting an honest first-impressions thread, a YouTube walkthrough from a channel already covering your category, and a mention in a relevant newsletter roundup can meaningfully move a repo's visibility — and every star that follows is tied to someone who actually looked at what you built.",
+      },
+      {
+        type: "text",
+        content:
+          "This is slower than a star-farm's overnight number, and that's the point — it's the same reason a launch built on [genuine influencer marketing for a SaaS product](/blog/how-to-run-an-influencer-marketing-campaign-for-your-saas-launch) outperforms one built on bought engagement over any timeframe longer than a week. For more on why the bought version collapses under scrutiny, see [why fake engagement kills your launch and what to do instead](/blog/why-fake-engagement-kills-your-launch-and-what-to-do-instead).",
+      },
+      { type: "newsletter" },
+      {
+        type: "heading",
+        content: "Frequently asked questions",
+      },
+      {
+        type: "faq",
+        items: [
+          {
+            question: "Can you buy GitHub stars safely?",
+            answer:
+              "Not reliably. GitHub's abuse detection identifies inorganic starring patterns — bulk-created accounts, tight time windows, no real activity — and removes them, sometimes in delayed bulk purges that make your count drop publicly. There's no safe version of manufacturing a number GitHub is actively built to detect.",
+          },
+          {
+            question: "Does GitHub remove fake or bought stars?",
+            answer:
+              "Yes. GitHub's platform-abuse systems flag and remove stars from accounts that show inorganic patterns, and purges can happen well after the stars were added — which is often worse for a maintainer than never having them, since the drop is visible.",
+          },
+          {
+            question: "What's the fastest genuine way to grow GitHub stars?",
+            answer:
+              "Get real developers with relevant audiences to actually try your project and share their honest reaction — through a demo video, a build-in-public thread, or a newsletter mention. Influencer marketing matched by developer niche is how this happens reliably instead of by chance.",
+          },
+          {
+            question: "How is influencer marketing for GitHub repos different from buying stars?",
+            answer:
+              "Buying stars manufactures a number with no one behind it. Influencer marketing gets a real person with a real, relevant audience to genuinely try your project and tell people about it in their own words — the resulting stars reflect actual interest and often bring follow-on engagement like contributors or mentions.",
+          },
+          {
+            question: "Do I need a huge budget to run a GitHub star campaign?",
+            answer:
+              "No — Amplibee's Starter plan lets you list a product profile and run one active campaign for free, and campaigns can run on a product-only or revenue-share basis, not just paid sponsorship, depending on what you can offer influencers.",
+          },
+          {
+            question: "Will influencers post generic ads for my repo?",
+            answer:
+              "No — the AI-generated brief is a starting point of talking points and angles, not a script. Genuine influencers adapt it into their own voice and post their own honest take, which is what makes the resulting engagement mean something to their audience.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     slug: "how-to-get-your-first-10-paying-users",
     title:
       "How to Get Your First 10 Paying Users: A Step-by-Step Playbook for B2B and B2C SaaS Founders",
@@ -632,230 +1021,6 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "how-to-get-genuine-github-stars-through-influencer-marketing",
-    title: "How to Get Genuine GitHub Stars Through Influencer Marketing (Not Bots)",
-    description:
-      "Bought stars get purged and erode trust the moment anyone checks. Here's the real playbook for earning GitHub stars that actually mean something.",
-    author: "Amplibee Team",
-    date: "2026-09-15",
-    color: "#4f46e5",
-    category: "Growth",
-    tags: ["github stars", "open source", "influencer marketing", "developer marketing"],
-    readingTime: "13 min read",
-    thumbnail: "/images/blog/how-to-get-genuine-github-stars-through-influencer-marketing/real-developers-real-stars-og.png",
-    body: [
-      {
-        type: "text",
-        content:
-          "**The short answer:** the fastest reliable way to grow GitHub stars that don't get purged, don't get flagged, and actually correlate with real usage is to get real developers with real audiences to genuinely try your repo and tell their followers about it — not to buy stars from a star-farm service. [Amplibee](/) does this by matching your repo with influencers and creators on X, LinkedIn, and YouTube whose audience already cares about the exact problem your project solves.",
-      },
-      {
-        type: "text",
-        content:
-          "If you've ever searched \"buy GitHub stars\" at 1am before a launch, you're not alone — and you're also about to read why that search is the wrong one. This guide covers why bought stars actively hurt you, how GitHub and the wider ecosystem detect them, and a real, repeatable playbook for earning stars that reflect actual interest in what you built.",
-      },
-      {
-        type: "heading",
-        content: "Why bought GitHub stars don't work anymore (if they ever really did)",
-      },
-      {
-        type: "text",
-        content:
-          "A star-farm sells you a number. It does not sell you users, contributors, issues filed by people who hit a real bug, or the kind of organic discovery that gets a repo onto a trending page for the right reasons. The number is the entire product — and numbers without behavior behind them are exactly what gets flagged.",
-      },
-      {
-        type: "list",
-        items: [
-          "**GitHub actively detects and removes inorganic stars.** Accounts created in bulk, with no commit history, no followed repos, and a starring pattern that spikes in a tight time window get caught by abuse detection — sometimes immediately, sometimes months later in a bulk purge. When that happens, your count drops publicly, which reads worse than never having inflated it.",
-          "**Developers check.** Anyone seriously evaluating a library looks past the star count — recent commits, issue response time, who's starring it (are they real accounts with real projects?), and whether the README reads like it was written by someone who ships. A high star count with a thin commit history and generic-looking stargazers is a red flag experienced developers recognize instantly.",
-          "**It doesn't compound.** A genuine star from a developer who actually uses your tool often comes with a follow, a mention in their own project's README, a conference talk reference, or a PR down the line. A bought star is a dead end — it never becomes anything else.",
-          "**It actively damages trust once discovered.** Nothing torches credibility with an open-source audience faster than the community discovering a project bought its numbers. It's the kind of story that gets its own thread, and it follows the maintainer to their next project too.",
-        ],
-      },
-      {
-        type: "text",
-        content:
-          "None of this is about GitHub stars being unimportant — they're a real, useful signal, which is exactly why faking them is such a bad trade. You're spending real money to manufacture a number that becomes a liability instead of an asset.",
-      },
-      {
-        type: "heading",
-        content: "What actually drives genuine GitHub star growth",
-      },
-      {
-        type: "text",
-        content:
-          "Real star growth almost always traces back to a person with an audience trying your project and telling people about it — a maintainer posting a demo, a YouTuber covering a new tool in their niche, a newsletter writer including it in a roundup, a conference speaker mentioning it live. The mechanism is word of mouth, just distributed through people who already have reach.",
-      },
-      {
-        type: "text",
-        content:
-          "That's the entire premise behind influencer marketing for open source: instead of hoping the right person organically finds your repo, you brief a campaign, and creators whose audience already cares about your exact category discover it and post about it genuinely — see [how the network match works](/features/influencer-network) for how that discovery happens.",
-      },
-      {
-        type: "subheading",
-        content: "The developer-audience creators worth reaching",
-      },
-      {
-        type: "list",
-        items: [
-          "**X/Twitter developers who post build-in-public content** — they're already primed to try new tools and share honest reactions with a technically literate audience.",
-          "**YouTube channels covering dev tools, frameworks, or your specific stack** — a real walkthrough video does more for adoption than almost any other content format, because viewers see the tool actually working.",
-          "**LinkedIn voices in your category** — especially for developer tools with a business-adjacent angle (DevOps, data infrastructure, internal tooling), where a technical leader's post reaches people with budget and influence over adoption, not just individual contributors.",
-          "**Newsletter and roundup writers** — inclusion in a well-read weekly roundup is slower than a single viral post, but the traffic is durable and the stars trickle in for weeks.",
-        ],
-      },
-      {
-        type: "heading",
-        content: "The playbook: running a genuine GitHub star campaign",
-      },
-      {
-        type: "subheading",
-        content: "1. Get the repo itself ready for a first impression",
-      },
-      {
-        type: "text",
-        content:
-          "Before you brief anyone, make sure the thing they'll actually look at earns the star. A clear README with a real problem statement in the first three lines, a working quickstart that doesn't require reading the whole codebase first, and a couple of screenshots or a short GIF if it's visual. Influencers won't manufacture credibility your repo doesn't have — they amplify what's actually there.",
-      },
-      {
-        type: "text",
-        content:
-          "**Action:** Read your own README as if you'd never seen the project. If it takes more than thirty seconds to understand what problem it solves, fix that first.",
-      },
-      {
-        type: "subheading",
-        content: "2. Set up a product profile and brief the campaign",
-      },
-      {
-        type: "text",
-        content:
-          "Create a [product profile](/features/product-profile) for the repo — what it does, who it's for, what makes it worth a genuine mention, and any facts that should stay consistent (star count, license, notable users). Then brief a campaign with the goal set to GitHub stars. The [campaign brief generator](/features/campaign-brief-generator) drafts suggested talking points per channel from that profile — a thread angle for X, a demo outline for YouTube — as a starting point influencers adapt into their own voice.",
-      },
-      {
-        type: "text",
-        content:
-          "**Action:** Be specific in the brief about the actual problem the repo solves and who feels that problem most acutely — vague briefs produce vague, easy-to-ignore talking points.",
-      },
-      {
-        type: "subheading",
-        content: "3. Let the network match you with the right influencers",
-      },
-      {
-        type: "text",
-        content:
-          "A GitHub-stars campaign should reach developer-audience creators specifically, not a broad, undifferentiated influencer list. In the [network](/network), influencers list their niches — this is what makes matching work: a campaign for a Rust CLI tool should surface to systems-programming creators, not lifestyle influencers, and a campaign for a no-code integration should surface to a very different set of accounts.",
-      },
-      {
-        type: "text",
-        content:
-          "**Action:** Check who's applying to or matched with your campaign before assuming reach equals fit — a smaller creator whose audience is exactly your target user is worth more than a large one whose audience isn't.",
-      },
-      {
-        type: "subheading",
-        content: "4. Review every deliverable before it counts",
-      },
-      {
-        type: "text",
-        content:
-          "When an influencer posts, they submit their deliverable link as proof. [Every submission gets reviewed](/features/review-every-deliverable) — is it live, does it genuinely engage with the project, does it read like a real developer's take rather than a copy-pasted script. This is the step that keeps a genuine campaign genuine: it's the same discipline that keeps bots and templated spam out of your results.",
-      },
-      {
-        type: "text",
-        content:
-          "**Action:** Actually read what influencers post, not just whether they posted. A short, honest reaction from a relevant developer often drives more real interest than a longer, generic mention.",
-      },
-      {
-        type: "subheading",
-        content: "5. Track what each deliverable actually drove",
-      },
-      {
-        type: "text",
-        content:
-          "Every influencer gets a [tracked link](/features/tracked-campaign-links) with UTM parameters, so you can see which specific post, video, or thread drove clicks back to your repo — and correlate that with your actual star growth over the following days. This is the data bought stars can never give you: a real signal about which creators, angles, and channels actually move a technical audience.",
-      },
-      {
-        type: "text",
-        content:
-          "**Action:** After a campaign, look at which influencer's link drove the most qualified traffic (not just clicks) and consider working with them again on your next release.",
-      },
-      {
-        type: "heading",
-        content: "Manufactured stars vs. genuine influencer-driven stars",
-      },
-      {
-        type: "table",
-        caption: "What you're actually buying",
-        headers: ["", "Bought stars", "Genuine influencer campaign"],
-        rows: [
-          ["Risk of removal", "High — bulk purges happen without warning", "None — stars come from real accounts acting genuinely"],
-          ["Correlates with real usage", "No", "Yes — driven by developers who actually looked at the repo"],
-          ["Compounds over time", "No — a dead-end number", "Often — follows, mentions, contributors, talk references"],
-          ["Reputational risk if discovered", "Severe — damages trust in the maintainer", "None — it's how open source has always grown"],
-          ["Attribution and learning", "None", "Per-influencer tracked links show what actually worked"],
-        ],
-      },
-      {
-        type: "quote",
-        content:
-          "A star count is supposed to be a proxy for real interest. The moment you fake the proxy, you've thrown away the only reason it was ever worth having.",
-      },
-      {
-        type: "heading",
-        content: "What good looks like: a realistic campaign shape",
-      },
-      {
-        type: "text",
-        content:
-          "A well-run GitHub-stars campaign for a mid-sized open-source project typically involves a handful of relevant creators rather than dozens of generic ones. One or two X developers posting an honest first-impressions thread, a YouTube walkthrough from a channel already covering your category, and a mention in a relevant newsletter roundup can meaningfully move a repo's visibility — and every star that follows is tied to someone who actually looked at what you built.",
-      },
-      {
-        type: "text",
-        content:
-          "This is slower than a star-farm's overnight number, and that's the point — it's the same reason a launch built on [genuine influencer marketing for a SaaS product](/blog/how-to-run-an-influencer-marketing-campaign-for-your-saas-launch) outperforms one built on bought engagement over any timeframe longer than a week. For more on why the bought version collapses under scrutiny, see [why fake engagement kills your launch and what to do instead](/blog/why-fake-engagement-kills-your-launch-and-what-to-do-instead).",
-      },
-      { type: "newsletter" },
-      {
-        type: "heading",
-        content: "Frequently asked questions",
-      },
-      {
-        type: "faq",
-        items: [
-          {
-            question: "Can you buy GitHub stars safely?",
-            answer:
-              "Not reliably. GitHub's abuse detection identifies inorganic starring patterns — bulk-created accounts, tight time windows, no real activity — and removes them, sometimes in delayed bulk purges that make your count drop publicly. There's no safe version of manufacturing a number GitHub is actively built to detect.",
-          },
-          {
-            question: "Does GitHub remove fake or bought stars?",
-            answer:
-              "Yes. GitHub's platform-abuse systems flag and remove stars from accounts that show inorganic patterns, and purges can happen well after the stars were added — which is often worse for a maintainer than never having them, since the drop is visible.",
-          },
-          {
-            question: "What's the fastest genuine way to grow GitHub stars?",
-            answer:
-              "Get real developers with relevant audiences to actually try your project and share their honest reaction — through a demo video, a build-in-public thread, or a newsletter mention. Influencer marketing matched by developer niche is how this happens reliably instead of by chance.",
-          },
-          {
-            question: "How is influencer marketing for GitHub repos different from buying stars?",
-            answer:
-              "Buying stars manufactures a number with no one behind it. Influencer marketing gets a real person with a real, relevant audience to genuinely try your project and tell people about it in their own words — the resulting stars reflect actual interest and often bring follow-on engagement like contributors or mentions.",
-          },
-          {
-            question: "Do I need a huge budget to run a GitHub star campaign?",
-            answer:
-              "No — Amplibee's Starter plan lets you list a product profile and run one active campaign for free, and campaigns can run on a product-only or revenue-share basis, not just paid sponsorship, depending on what you can offer influencers.",
-          },
-          {
-            question: "Will influencers post generic ads for my repo?",
-            answer:
-              "No — the AI-generated brief is a starting point of talking points and angles, not a script. Genuine influencers adapt it into their own voice and post their own honest take, which is what makes the resulting engagement mean something to their audience.",
-          },
-        ],
-      },
-    ],
-  },
-  {
     slug: "how-to-run-an-influencer-marketing-campaign-for-your-saas-launch",
     title: "How to Run an Influencer Marketing Campaign for Your SaaS Launch",
     description:
@@ -1065,171 +1230,6 @@ export const blogPosts: BlogPost[] = [
             question: "How do I know which influencer actually drove sign-ups?",
             answer:
               "Each influencer gets a unique tracked link with UTM parameters, so sign-ups, clicks, or downloads attributed to their specific post are visible per-influencer rather than as one combined campaign total.",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    slug: "why-fake-engagement-kills-your-launch-and-what-to-do-instead",
-    title: "Why Fake Engagement Kills Your Launch (and What to Do Instead)",
-    description:
-      "Bought followers, vote manipulation, and bot engagement get detected, erode trust, and trigger algorithmic penalties. Here's what genuine influencer marketing does differently.",
-    author: "Amplibee Team",
-    date: "2026-09-21",
-    color: "#059669",
-    category: "Marketing",
-    tags: ["fake engagement", "genuine marketing", "trust", "platform detection"],
-    readingTime: "11 min read",
-    thumbnail: "/images/blog/why-fake-engagement-kills-your-launch-and-what-to-do-instead/bots-out-genuine-reach-in-og.png",
-    body: [
-      {
-        type: "text",
-        content:
-          "**The short answer:** fake engagement — bought followers, upvote rings, bot comments, purchased stars — gets detected by the platforms hosting it, gets purged after the fact rather than before, and permanently damages the trust of the real audience who eventually notices. Genuine influencer marketing avoids all three failure modes because there's no manufactured number to detect or purge — just real people telling their real audience about something worth telling them about, which is the entire model [Amplibee](/) is built around.",
-      },
-      {
-        type: "text",
-        content:
-          "Every founder under launch pressure has seen the ad: a few hundred dollars for a thousand followers, upvotes, or stars, delivered within 24 hours. It's tempting precisely because the pressure is real and the offer looks like a shortcut through it. This is a breakdown of why that shortcut fails on every axis that actually matters, and what to do with the same budget and urgency instead.",
-      },
-      {
-        type: "heading",
-        content: "Failure mode 1: platform detection",
-      },
-      {
-        type: "text",
-        content:
-          "Every major platform — X, LinkedIn, YouTube, Instagram, GitHub, Product Hunt — runs abuse detection specifically built to catch inorganic engagement patterns: accounts created in bulk, engagement spiking in a tight time window, follower graphs with no organic structure, comment text that repeats across unrelated posts. This isn't a hypothetical risk; it's a standing, adversarial system actively looking for exactly what a bought-engagement service produces.",
-      },
-      {
-        type: "text",
-        content:
-          "The failure isn't always immediate. Bulk purges often happen weeks or months later, which means the damage lands at the worst possible time — after you've built plans, reporting, or investor updates around a number that's about to disappear.",
-      },
-      {
-        type: "list",
-        items: [
-          "**X/Twitter** actively removes bot and spam accounts in periodic sweeps, which can visibly drop a follower count overnight.",
-          "**GitHub** flags and removes inorganic stars from accounts showing bulk-creation and no-activity patterns — sometimes well after the fact.",
-          "**Product Hunt** has a well-documented history of removing manipulated votes and penalizing products caught coordinating them, including removal from leaderboards.",
-          "**YouTube and Instagram** both algorithmically deprioritize accounts with engagement-to-follower ratios that don't match organic patterns, which can suppress reach even without an explicit ban.",
-        ],
-      },
-      {
-        type: "heading",
-        content: "Failure mode 2: audience trust erosion",
-      },
-      {
-        type: "text",
-        content:
-          "Detection is a platform problem. Trust erosion is a people problem, and it's worse, because it doesn't reverse when you stop. Audiences — developers evaluating a library, consumers reading reviews, investors looking at traction — have gotten good at spotting the signature of manufactured engagement: round numbers, engagement that doesn't match comment quality, a launch with thousands of upvotes and zero substantive discussion.",
-      },
-      {
-        type: "text",
-        content:
-          "Once a specific instance of fake engagement gets called out publicly — and in tight-knit communities like open source or indie SaaS, it usually does — it doesn't just cost that number. It recolors every other number the project has ever shown, retroactively. A skeptical audience doesn't say \"well, most of it was real\" — they assume the worst about everything else too.",
-      },
-      {
-        type: "quote",
-        content:
-          "The reason bought engagement feels like a shortcut is the same reason it's not one: it skips the part where a real person decides your product was worth telling someone about. That decision is the entire value. There's no way to fake it that doesn't also fake the reason it mattered.",
-      },
-      {
-        type: "heading",
-        content: "Failure mode 3: algorithmic penalties",
-      },
-      {
-        type: "text",
-        content:
-          "Beyond outright detection and removal, most platform algorithms use engagement-quality signals — not just engagement volume — to decide what to amplify further. Content that gets a burst of low-quality engagement (bot likes, template comments, follows from accounts with no history) often gets throttled rather than boosted, because the platform's own model reads the pattern as spam regardless of intent.",
-      },
-      {
-        type: "text",
-        content:
-          "This means fake engagement doesn't just risk a future purge — it can actively suppress the real reach you'd otherwise have gotten from the launch, at the exact moment reach matters most.",
-      },
-      {
-        type: "heading",
-        content: "Failure mode 4: brand damage that outlasts the campaign",
-      },
-      {
-        type: "text",
-        content:
-          "The first three failure modes are mostly reversible in the sense that a project can recover technically — a purged follower count can be rebuilt, an algorithmic penalty can lift. Brand damage is the one that lingers, because it lives in people's memory of your name, not in a platform's database. A founder or maintainer caught buying engagement once carries that association into their next product, their next repo, their next launch — long after the specific numbers in question have been forgotten.",
-      },
-      {
-        type: "heading",
-        content: "What genuine influencer marketing does instead",
-      },
-      {
-        type: "text",
-        content:
-          "The alternative isn't \"do nothing and hope for organic reach.\" It's routing the same budget and urgency toward real people with real audiences who choose, genuinely, to tell their followers about your product — see [how to run an influencer campaign for a SaaS launch](/blog/how-to-run-an-influencer-marketing-campaign-for-your-saas-launch) for the practical steps. The mechanism looks similar on the surface (someone posts about your product, people see it, some of them act) but every property that made bought engagement fail is the exact property genuine influencer marketing gets right.",
-      },
-      {
-        type: "table",
-        caption: "Bought engagement vs. genuine influencer marketing",
-        headers: ["", "Bought engagement", "Genuine influencer marketing"],
-        rows: [
-          ["Platform detection risk", "High — actively targeted by abuse systems", "None — every action is a real account, real activity"],
-          ["Audience trust if discovered", "Destroyed, retroactively", "N/A — nothing to discover, it's genuinely their opinion"],
-          ["Algorithmic treatment", "Often throttled as spam", "Treated as normal organic engagement"],
-          ["Durability", "Purged eventually, often without warning", "Persists — a real post stays real"],
-          ["Attribution", "None — a number with no source", "Per-influencer tracked links show what worked"],
-        ],
-      },
-      {
-        type: "text",
-        content:
-          "This is the core design decision behind Amplibee: every profile in the [network](/network) is a real, opted-in influencer or creator, every campaign is matched by genuine niche fit, the AI [drafts talking points, never a script](/features/campaign-brief-generator) so what gets posted stays in the influencer's real voice, and [every deliverable is reviewed](/features/review-every-deliverable) before it counts — the same discipline that keeps bots and templated spam out is what keeps the resulting engagement genuinely worth having.",
-      },
-      {
-        type: "heading",
-        content: "If you've already used bought engagement",
-      },
-      {
-        type: "text",
-        content:
-          "If a past launch leaned on a star-farm, a follower package, or an upvote ring, the fix isn't panic — it's redirecting forward. Stop adding to the inflated number, let organic and genuine activity become a larger share of the total over time, and be straightforward if anyone asks rather than compounding the original mistake with a defensive explanation. The audience you actually want going forward cares far more about what you do next than about a number from a launch they've already forgotten.",
-      },
-      { type: "newsletter" },
-      {
-        type: "heading",
-        content: "Frequently asked questions",
-      },
-      {
-        type: "faq",
-        items: [
-          {
-            question: "Do platforms actually detect bought followers or engagement?",
-            answer:
-              "Yes. X, GitHub, Product Hunt, YouTube, and Instagram all run abuse-detection systems that flag inorganic patterns — bulk account creation, engagement spikes in tight time windows, follower graphs with no organic structure — and remove the resulting engagement, sometimes in delayed bulk purges.",
-          },
-          {
-            question: "Can bought engagement hurt my reach even if it isn't removed?",
-            answer:
-              "Yes. Many platform algorithms weigh engagement quality, not just volume, when deciding what to amplify. A burst of low-quality engagement can get content throttled as suspected spam rather than boosted, suppressing the real reach a launch would otherwise have gotten.",
-          },
-          {
-            question: "Is it worth the risk to buy engagement just for a launch day boost?",
-            answer:
-              "No — the risk isn't limited to launch day. Purges often happen weeks or months later, and if discovered, the trust damage extends backward to every other number the project has shown, not just the inflated one.",
-          },
-          {
-            question: "What's the genuine alternative to buying followers or stars?",
-            answer:
-              "Influencer marketing matched by real niche fit — real creators with real audiences who genuinely choose to post about your product in their own voice, with every deliverable reviewed before it counts toward results.",
-          },
-          {
-            question: "How is Amplibee different from a service that sells followers or stars?",
-            answer:
-              "Amplibee has no mechanism to sell engagement directly — it matches product owners with real, opted-in influencers whose audience fits the campaign's niche, and reviews every submitted deliverable before it counts, so results reflect genuine posts to genuine audiences.",
-          },
-          {
-            question: "What should I do if a past launch already used bought engagement?",
-            answer:
-              "Stop adding to it, let genuine activity become a larger share of your numbers going forward, and be straightforward if asked rather than compounding it with a defensive explanation — audiences care more about what you do next than a number from a launch they've likely already forgotten.",
           },
         ],
       },
