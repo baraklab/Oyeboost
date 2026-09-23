@@ -1,4 +1,4 @@
-export type AIProviderId = "openai" | "anthropic" | "openrouter";
+export type AIProviderId = "openai" | "anthropic" | "openrouter" | "custom";
 
 export interface AIProviderDefinition {
   id: AIProviderId;

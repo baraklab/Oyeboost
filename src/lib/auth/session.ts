@@ -42,6 +42,12 @@ export async function getRefreshTokenCookie(): Promise<string | null> {
   return store.get(REFRESH_TOKEN_COOKIE)?.value ?? null;
 }
 
+/** Raw access token cookie, for callers that need to hit an edge function directly (e.g. auth-user). */
+export async function getAccessTokenCookie(): Promise<string | null> {
+  const store = await cookies();
+  return store.get(ACCESS_TOKEN_COOKIE)?.value ?? null;
+}
+
 export async function getTemporaryTokenCookie(): Promise<string | null> {
   const store = await cookies();
   return store.get(TEMPORARY_TOKEN_COOKIE)?.value ?? null;

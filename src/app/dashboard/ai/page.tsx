@@ -1,89 +1,53 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowUpRight, CheckCircle2, Circle, Sliders } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/page-header";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { ProviderManager, type ConfiguredProviderRow } from "./provider-manager";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getCurrentUserId } from "@/lib/auth/session";
-import { aiProviderList } from "@/lib/ai/registry";
+import { decryptSecret, maskSecret } from "@/lib/crypto";
+import { aiProviderRegistry, aiProviderList } from "@/lib/ai/registry";
 import type { AIProviderIdDb } from "@/types/database";
 
-export const metadata: Metadata = { title: "AI" };
+export const metadata: Metadata = { title: "BYOK" };
 export const dynamic = "force-dynamic";
 
-export default async function AIOverviewPage() {
+export default async function AIProvidersPage() {
   const supabase = createAdminClient();
   const userId = (await getCurrentUserId())!;
 
-  const [{ data: providers }, { count: profileCount }] = await Promise.all([
-    supabase.from("ai_providers").select("provider, is_default, last_test_status").eq("user_id", userId),
-    supabase.from("content_profiles").select("id", { count: "exact", head: true }).eq("user_id", userId),
-  ]);
+  const { data: rows } = await supabase
+    .from("ai_providers")
+    .select("id, provider, label, base_url, encrypted_api_key, default_model, is_default, last_test_status")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: true });
 
-  const configured = new Map((providers ?? []).map((p) => [p.provider as AIProviderIdDb, p]));
+  const configured: ConfiguredProviderRow[] = (rows ?? []).map((row) => {
+    const providerId = row.provider as AIProviderIdDb;
+    return {
+      id: row.id,
+      provider: providerId,
+      definition: providerId === "custom" ? null : aiProviderRegistry[providerId].definition,
+      label: row.label,
+      baseUrl: row.base_url,
+      defaultModel: row.default_model,
+      isDefault: row.is_default,
+      lastTestStatus: row.last_test_status,
+      maskedKey: maskSecret(decryptSecret(row.encrypted_api_key)),
+    };
+  });
+
+  const configuredFixedIds = new Set(configured.filter((c) => c.definition).map((c) => c.provider));
+  const availableFixed = aiProviderList
+    .filter((provider) => !configuredFixedIds.has(provider.definition.id))
+    .map((provider) => provider.definition);
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        title="AI"
-        description="Bring your own key. Amplibee never marks up AI usage."
-        action={
-          <Button variant="outline" asChild>
-            <Link href="/dashboard/settings/ai-providers">
-              Manage providers <ArrowUpRight className="size-3.5" />
-            </Link>
-          </Button>
-        }
+        title="BYOK"
+        description="Bring your own key. Amplibee never marks up AI usage — connect OpenAI, Anthropic, OpenRouter, or any OpenAI-compatible provider directly and pay that provider at their rates."
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        {aiProviderList.map((provider) => {
-          const state = configured.get(provider.definition.id);
-          return (
-            <div key={provider.definition.id} className="rounded-lg border border-border bg-card p-4">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-foreground">{provider.definition.name}</p>
-                {state ? (
-                  <CheckCircle2 className="size-4 text-success" />
-                ) : (
-                  <Circle className="size-4 text-muted-foreground" />
-                )}
-              </div>
-              <div className="mt-2 flex items-center gap-1.5">
-                {state ? (
-                  <>
-                    <Badge variant={state.last_test_status === "success" ? "success" : "outline"}>
-                      {state.last_test_status === "success" ? "Verified" : "Not tested"}
-                    </Badge>
-                    {state.is_default && <Badge variant="accent">Default</Badge>}
-                  </>
-                ) : (
-                  <span className="text-xs text-muted-foreground">Not connected</span>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="rounded-lg border border-border bg-card p-5">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="font-heading text-[15px] font-semibold text-foreground">Content profiles</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {profileCount ?? 0} saved profile{profileCount === 1 ? "" : "s"} controlling tone, audience, and
-              brand voice.
-            </p>
-          </div>
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/dashboard/settings/content-preferences">
-              <Sliders className="size-3.5" />
-              Manage
-            </Link>
-          </Button>
-        </div>
-      </div>
+      <ProviderManager configured={configured} availableFixed={availableFixed} />
     </div>
   );
 }

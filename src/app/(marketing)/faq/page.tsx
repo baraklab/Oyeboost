@@ -6,7 +6,8 @@ import { breadcrumbJsonLd, faqJsonLd } from "@/lib/seo/jsonld";
 
 export const metadata: Metadata = pageMetadata({
   title: "FAQ",
-  description: "Common questions about how Amplibee generates, reviews, and publishes content.",
+  description:
+    "Common questions about how Amplibee matches influencers to campaigns, generates AI talking points, and reviews every deliverable for genuine engagement.",
   path: "/faq",
 });
 

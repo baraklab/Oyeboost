@@ -1,9 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Users, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/ui/empty-state";
 import { SectionHeading } from "@/components/marketing/section-heading";
+import { InfluencerMarquee } from "@/components/marketing/influencer-marquee";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = pageMetadata({
   title: "Network",
-  description: `Discover influencers, creators, and communities in the Amplibee network — ${siteConfig.stats.users} users and ${siteConfig.stats.influencers} influencers ready to amplify launches.`,
+  description: `The Amplibee network — ${siteConfig.stats.influencers} real influencers and creators who discover campaigns by niche and post genuinely to their own audience.`,
   path: "/network",
 });
 
@@ -30,7 +30,7 @@ export default async function NetworkPage() {
   const supabase = createAdminClient();
   const { data: profiles } = await supabase
     .from("network_profiles")
-    .select("id, display_name, category, platforms, audience_size, bio")
+    .select("id, display_name, category, platforms, audience_size, bio, niches")
     .eq("is_visible", true)
     .order("created_at", { ascending: false })
     .limit(24);
@@ -44,16 +44,15 @@ export default async function NetworkPage() {
         ])}
       />
       <section className="border-b border-border">
-        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-          <p className="text-eyebrow">Network</p>
-          <h1 className="font-heading mt-3 max-w-2xl text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Tap into {siteConfig.stats.users} users and {siteConfig.stats.influencers} influencers
-            ready to amplify your launch.
+        <div className="mx-auto max-w-6xl px-6 pb-8 pt-16 sm:pb-10 sm:pt-20">
+          <h1 className="font-heading max-w-2xl text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Where {siteConfig.stats.influencers} real influencers discover campaigns worth
+            posting about.
           </h1>
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
-            The network is where Amplibee users, creators, and communities discover each
-            other&apos;s launches. It&apos;s early — today it&apos;s a directory. Over time it
-            becomes a place to find people to amplify your launch, and launches worth amplifying.
+            This is the marketplace where product owners and genuine influencers find each other —
+            matched by niche and channel, not cold outreach. Browse who&apos;s here, or list your
+            own campaign and let the right creators discover it.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Button asChild>
@@ -70,11 +69,11 @@ export default async function NetworkPage() {
       </section>
 
       <section className="border-b border-border bg-muted/20">
-        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-6 pb-16 pt-8 sm:pb-20 sm:pt-10">
           <SectionHeading
             eyebrow="Directory"
             title="Influencers, creators, and communities"
-            description="Visible profiles are opted in by the people and communities listed here."
+            description="Every profile here is opted in, and every deliverable they post gets reviewed — genuine reach only."
           />
 
           <div className="mt-10">
@@ -101,6 +100,18 @@ export default async function NetworkPage() {
                     {profile.bio && (
                       <p className="mt-2 text-sm text-muted-foreground">{profile.bio}</p>
                     )}
+                    {profile.niches && profile.niches.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {profile.niches.map((niche) => (
+                          <span
+                            key={niche}
+                            className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+                          >
+                            {niche}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                     {profile.audience_size && (
                       <p className="mt-3 text-xs text-muted-foreground">
                         ~{profile.audience_size.toLocaleString()} audience
@@ -111,16 +122,18 @@ export default async function NetworkPage() {
                 })}
               </div>
             ) : (
-              <EmptyState
-                icon={Users}
-                title="The directory is just getting started"
-                description="Be one of the first creators or communities listed — apply and we'll review it."
-                action={
+              <div>
+                <InfluencerMarquee />
+                <div className="mt-8 flex flex-col items-center gap-3 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Illustrative profiles — the real directory is just getting started. Be one of
+                    the first creators or communities listed.
+                  </p>
                   <Button variant="outline" asChild>
                     <Link href="/contact">Apply to be listed</Link>
                   </Button>
-                }
-              />
+                </div>
+              </div>
             )}
           </div>
         </div>

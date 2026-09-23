@@ -1,7 +1,11 @@
 import type { PlatformId } from "@/lib/platforms/types";
-import { getAIProvider } from "./registry";
+import { getAIProviderRuntime } from "./registry";
 import type { AIProviderId } from "./types";
 
+/**
+ * A product's "voice" for campaign brief generation — what the product owner
+ * sounds like and wants influencers to say, not a personal writing style.
+ */
 export interface ContentProfile {
   tone: string;
   audience: string;
@@ -16,7 +20,7 @@ export interface ContentProfile {
 
 export const defaultContentProfile: ContentProfile = {
   tone: "founder",
-  audience: "founders and builders",
+  audience: "builders and early adopters",
   brandVoice: "direct, confident, no fluff",
   length: "medium",
   formality: "neutral",
@@ -26,20 +30,22 @@ export const defaultContentProfile: ContentProfile = {
   personalContext: "",
 };
 
-const platformInstructions: Record<PlatformId, string> = {
-  x: "Write a single X post. Stay under 280 characters. Keep the hook in the first line. No hashtags unless the source used them.",
+const channelInstructions: Record<PlatformId, string> = {
+  x: "Write a single X post an influencer could post as their own genuine reaction — a hook, a real opinion on why this is worth trying, no corporate voice. Stay under 280 characters. No hashtags unless natural.",
   linkedin:
-    "Write a LinkedIn post. 3-6 short paragraphs with line breaks between them, professional but human, add relevant context a LinkedIn audience needs (why this matters), and close with a light call to action. 150-350 words.",
-  medium:
-    "Expand this into a Medium article. Use a compelling title on the first line prefixed with '# ', then 3-6 H2 sections ('## ') that add context, examples, and depth beyond the source post. 500-900 words.",
-  substack:
-    "Turn this into a newsletter-style Substack post. Open with a personal, conversational hook, use short paragraphs, include one or two subheadings ('## '), and close with a direct call to action for subscribers. 400-700 words.",
+    "Write a LinkedIn post shaped as an influencer's own take: why they're excited about this, who it helps, and what stood out — first person, professional but human, 3-6 short paragraphs with line breaks. 150-350 words.",
+  youtube:
+    "Write a short video talking-points outline an influencer could use to introduce this in their own words: a hook for the first 10 seconds, 3-4 beats covering what it is and why it's worth their audience's time, and a natural closing mention — not a script to read verbatim.",
+  instagram:
+    "Write a caption an influencer could post alongside a photo, reel, or story — a personal, authentic-sounding hook, why it's worth sharing, and a light call to action. Short, scannable, a couple of relevant hashtags at most.",
 };
 
 function buildSystemPrompt(profile: ContentProfile): string {
   const lines = [
-    "You are a ghostwriter helping a founder repurpose one piece of content across platforms.",
-    "Stay faithful to the source material's core idea and facts — never invent claims, numbers, or quotes.",
+    "You are helping a product owner brief influencers who will genuinely promote their product or open-source repo to their own audience.",
+    "Write talking points and suggested captions the influencer can adapt in their own voice — never a corporate ad, never something that reads like it was pasted from the company.",
+    "Stay faithful to the source material's facts — never invent claims, numbers, or quotes.",
+    "Never suggest or imply buying followers, bots, fake engagement, vote manipulation, or anything that isn't a genuine post to a real audience.",
     `Tone: ${profile.tone}.`,
     `Audience: ${profile.audience}.`,
     `Brand voice: ${profile.brandVoice}.`,
@@ -49,8 +55,8 @@ function buildSystemPrompt(profile: ContentProfile): string {
   ];
   if (profile.topicsToAvoid) lines.push(`Do not mention: ${profile.topicsToAvoid}.`);
   if (profile.wordsToAvoid) lines.push(`Avoid these words/phrases: ${profile.wordsToAvoid}.`);
-  if (profile.personalContext) lines.push(`Context about the author/company: ${profile.personalContext}.`);
-  lines.push("Output only the finished post text — no preamble, no explanation, no quotation marks around it.");
+  if (profile.personalContext) lines.push(`Context about the product/company: ${profile.personalContext}.`);
+  lines.push("Output only the finished brief text — no preamble, no explanation, no quotation marks around it.");
   return lines.join("\n");
 }
 
@@ -61,19 +67,20 @@ export interface GenerateForPlatformInput {
   providerId: AIProviderId;
   apiKey: string;
   model: string;
+  baseUrl?: string | null;
   linkUrl?: string;
 }
 
 export async function generateForPlatform(input: GenerateForPlatformInput): Promise<string> {
-  const provider = getAIProvider(input.providerId);
+  const provider = getAIProviderRuntime(input.providerId, input.baseUrl);
   const system = buildSystemPrompt(input.profile);
-  const instruction = platformInstructions[input.targetPlatform];
+  const instruction = channelInstructions[input.targetPlatform];
   const prompt = [
-    `Platform: ${input.targetPlatform}`,
+    `Channel: ${input.targetPlatform}`,
     instruction,
-    input.linkUrl ? `Include this link naturally where it fits: ${input.linkUrl}` : "",
+    input.linkUrl ? `Suggest working this link in naturally: ${input.linkUrl}` : "",
     "",
-    "Source content:",
+    "What's being promoted:",
     input.sourceContent,
   ]
     .filter(Boolean)
@@ -100,10 +107,10 @@ export type RefinementAction =
   | "change_tone";
 
 const refinementInstructions: Record<RefinementAction, string> = {
-  shorten: "Shorten this post by roughly a third while keeping the core message intact.",
-  expand: "Expand this post with one more concrete supporting detail or example, without padding.",
+  shorten: "Shorten this by roughly a third while keeping the core message intact.",
+  expand: "Expand this with one more concrete supporting detail or example, without padding.",
   improve_hook: "Rewrite only the opening line to be a stronger hook. Keep the rest unchanged.",
-  add_cta: "Add a single short call-to-action at the end, matching the post's existing tone.",
+  add_cta: "Add a single short call-to-action at the end, matching the existing tone.",
   remove_cta: "Remove any call-to-action at the end and close on the last substantive point instead.",
   more_technical: "Make the language more technical and specific for a developer audience.",
   more_conversational: "Make the language more conversational and casual, like talking to a peer.",
@@ -117,9 +124,10 @@ export async function refinePost(input: {
   providerId: AIProviderId;
   apiKey: string;
   model: string;
+  baseUrl?: string | null;
   newTone?: string;
 }): Promise<string> {
-  const provider = getAIProvider(input.providerId);
+  const provider = getAIProviderRuntime(input.providerId, input.baseUrl);
   const instruction =
     input.action === "change_tone" && input.newTone
       ? `Rewrite in a ${input.newTone} tone while keeping the same information.`
@@ -129,8 +137,8 @@ export async function refinePost(input: {
     apiKey: input.apiKey,
     model: input.model,
     system:
-      "You edit social and long-form posts precisely. Make only the requested change. Output only the finished post text, no preamble.",
-    prompt: `Platform: ${input.targetPlatform}\nInstruction: ${instruction}\n\nCurrent post:\n${input.content}`,
+      "You edit influencer campaign briefs precisely. Make only the requested change, and keep it sounding like a genuine personal post, not an ad. Output only the finished text, no preamble.",
+    prompt: `Channel: ${input.targetPlatform}\nInstruction: ${instruction}\n\nCurrent text:\n${input.content}`,
   });
 
   return result.text.trim();

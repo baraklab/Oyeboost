@@ -148,9 +148,12 @@ export async function logout(refreshToken: string): Promise<void> {
 
 export interface RemoteUser {
   id: string;
-  name: string | null;
+  name: string;
   email: string;
   verified: boolean;
+  fullName: string;
+  companyName: string;
+  websiteUrl: string;
 }
 
 export async function fetchCurrentUser(accessToken: string): Promise<RemoteUser | null> {

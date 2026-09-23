@@ -284,3 +284,23 @@ h6 {
     animation: none;
   }
 }
+
+/* ---------- Horizontal marquee (network directory showcase) ---------- */
+@keyframes marquee-rtl {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Track is duplicated content, so -50% is exactly one full copy. */
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee-rtl 42s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}

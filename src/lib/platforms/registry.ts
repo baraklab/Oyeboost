@@ -1,41 +1,20 @@
-import type { PlatformId, PlatformProvider } from "./types";
-import { xProvider } from "./providers/x";
-import { linkedinProvider } from "./providers/linkedin";
-import { mediumProvider } from "./providers/medium";
-import { substackProvider } from "./providers/substack";
+import type { PlatformId, PlatformDefinition } from "./types";
 
 /**
- * Central registry of platform adapters. Add a new platform by writing a
- * provider module (see providers/x.ts for the fullest example) and
- * registering it here — nothing else in the app should import a
- * provider module directly.
+ * Central registry of channel metadata. Add a new channel by adding an
+ * entry here — nothing else in the app should hardcode this list.
  */
-export const platformRegistry: Record<PlatformId, PlatformProvider> = {
-  x: xProvider,
-  linkedin: linkedinProvider,
-  medium: mediumProvider,
-  substack: substackProvider,
+export const platformRegistry: Record<PlatformId, PlatformDefinition> = {
+  x: { id: "x", name: "X", shortName: "X", color: "#000000", contentKind: "a post or thread" },
+  linkedin: { id: "linkedin", name: "LinkedIn", shortName: "LinkedIn", color: "#0A66C2", contentKind: "a post" },
+  youtube: { id: "youtube", name: "YouTube", shortName: "YouTube", color: "#FF0000", contentKind: "a video" },
+  instagram: { id: "instagram", name: "Instagram", shortName: "Instagram", color: "#E1306C", contentKind: "a post or reel" },
 };
 
 export const platformList = Object.values(platformRegistry);
 
-export function getPlatform(id: PlatformId): PlatformProvider {
-  const provider = platformRegistry[id];
-  if (!provider) throw new Error(`Unknown platform: ${id}`);
-  return provider;
-}
-
-export function isPlatformConfigured(id: PlatformId): boolean {
-  switch (id) {
-    case "x":
-      return Boolean(process.env.X_CLIENT_ID && process.env.X_CLIENT_SECRET);
-    case "linkedin":
-      return Boolean(process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET);
-    case "medium":
-      return true; // user supplies their own integration token, nothing to configure server-side
-    case "substack":
-      return true; // manual, nothing to configure
-    default:
-      return false;
-  }
+export function getPlatform(id: PlatformId): PlatformDefinition {
+  const definition = platformRegistry[id];
+  if (!definition) throw new Error(`Unknown channel: ${id}`);
+  return definition;
 }

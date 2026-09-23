@@ -12,7 +12,7 @@ import { FEATURE_LIST } from "@/lib/features-data";
 
 const title = "Features";
 const description =
-  "Multi-account platform connections, an AI transformation engine, BYOK, visual workflows, and auto-generated backlinks, in one place.";
+  "AI campaign briefs, a real influencer network, tracked links, and reviewed deliverables — everything for running a genuine influencer marketing campaign, in one place.";
 
 export const metadata: Metadata = pageMetadata({
   title,
@@ -38,13 +38,13 @@ export default function FeaturesPage() {
       <section id="integrations">
         <div className="mx-auto max-w-6xl px-6 pb-16 pt-8 sm:pb-20 sm:pt-10">
           <h1 className="font-heading mx-auto max-w-4xl text-center text-3xl font-semibold tracking-tight text-foreground">
-            Everything a product needs.
+            Everything a genuine influencer campaign needs.
             <br />
-            Post everywhere. Get influencers to promote your product.
+            Brief it once. Real influencers do the rest.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-center text-[15px] leading-relaxed text-muted-foreground">
-            Publish once, automatically create platform-native posts, and connect with influencers who can
-  help get your product in front of more people — organically.
+            AI-assisted campaign briefs, a real influencer network, tracked links, and reviewed
+            deliverables — built around genuine reach, never bots or bought engagement.
           </p>
 
           <div className="mt-12 flex flex-col gap-6">
@@ -68,8 +68,8 @@ export default function FeaturesPage() {
         <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
           <SectionHeading
             eyebrow="How it flows"
-            title="Pick a source. Pick destinations. Review, then publish."
-            description="A workflow is just a source account, one or more destination platforms, and an approval step in between."
+            title="Brief a campaign. Influencers post genuinely across channels."
+            description="One campaign, matched by niche to real influencers on X, LinkedIn, YouTube, and Instagram."
           />
           <div className="mt-10">
             <WorkflowMap />

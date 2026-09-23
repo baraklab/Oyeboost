@@ -1,23 +1,23 @@
 export const siteConfig = {
   name: "Amplibee",
-  tagline: "Marketing muscle for your products.",
+  tagline: "Influencer marketing for apps, SaaS, products, startups",
   description:
-    "Amplibee turns one post into platform-native content for X, LinkedIn, Medium, and Substack, and generates backlinks for every launch.",
+    "Amplibee connects product owners with real influencers and creators on X, LinkedIn, YouTube, and Instagram — genuine posts and videos to their own audience that drive real GitHub stars, sign-ups, and downloads. No bots, no fake engagement.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://amplibee.com",
   locale: "en_US",
   twitterHandle: "@baraklabs",
   keywords: [
     "Amplibee",
+    "influencer marketing platform",
+    "GitHub stars",
+    "open source promotion",
+    "SaaS influencer marketing",
     "product launch marketing",
-    "cross-posting tool",
-    "content repurposing",
-    "social media automation",
-    "Product Hunt launch",
-    "backlink generation",
-    "X to LinkedIn",
-    "content distribution",
-    "publish once, post everywhere",
-    "AI content repurposing",
+    "creator marketplace",
+    "genuine engagement",
+    "X and LinkedIn influencers",
+    "YouTube product reviews",
+    "AI campaign brief generator",
     "bring your own AI key",
   ],
   company: "Baraklabs",
@@ -29,7 +29,7 @@ export const siteConfig = {
   },
   stats: {
     users: "10,000+",
-    influencers: "500+",
+    influencers: "1.2M+",
   },
 } as const;
 

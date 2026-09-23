@@ -3,82 +3,103 @@
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getCurrentUserId } from "@/lib/auth/session";
-import { decryptSecret } from "@/lib/crypto";
-import { generateContentSchema, refineActionSchema } from "@/lib/validation/compose";
-import { generateForPlatform, refinePost, defaultContentProfile, type ContentProfile } from "@/lib/ai/transform";
-import { getPlatform } from "@/lib/platforms/registry";
+import { generateContentSchema } from "@/lib/validation/compose";
+import { generateForPlatform } from "@/lib/ai/transform";
+import { loadSelectedAIProvider, loadContentProfile } from "@/lib/ai/server-helpers";
 import { buildTrackedUrl } from "@/lib/backlinks";
-import type { AIProviderIdDb, PlatformIdDb } from "@/types/database";
-import type { PlatformId } from "@/lib/platforms/types";
+import type { ChannelId, BudgetType, CampaignGoal } from "@/types/database";
+import type { z } from "zod";
 
-export interface GeneratedPostView {
+export interface CampaignBriefView {
   id: string;
-  platform: PlatformIdDb;
+  channel: ChannelId;
   content: string;
   status: string;
 }
 
-export interface GenerateContentState {
+export interface CreateCampaignState {
   status: "idle" | "success" | "error";
   error?: string;
-  sourcePostId?: string;
-  posts?: GeneratedPostView[];
+  campaignId?: string;
+  campaignName?: string;
+  briefs?: CampaignBriefView[];
 }
 
-async function loadDefaultAIProvider(userId: string) {
-  const supabase = createAdminClient();
-  const { data } = await supabase
-    .from("ai_providers")
-    .select("provider, encrypted_api_key, default_model")
-    .eq("user_id", userId)
-    .eq("is_default", true)
-    .single();
+const budgetTypes: BudgetType[] = ["unpaid", "paid", "gifted"];
 
-  if (!data) return null;
-  return {
-    providerId: data.provider as AIProviderIdDb,
-    apiKey: decryptSecret(data.encrypted_api_key),
-    model: data.default_model,
-  };
+function parseBudgetType(value: FormDataEntryValue | null): BudgetType {
+  return budgetTypes.includes(value as BudgetType) ? (value as BudgetType) : "unpaid";
 }
 
-async function loadContentProfile(userId: string, profileId?: string): Promise<ContentProfile> {
-  const supabase = createAdminClient();
-  const query = supabase.from("content_profiles").select("*").eq("user_id", userId);
-
-  const { data } = profileId
-    ? await query.eq("id", profileId).single()
-    : await query.eq("is_default", true).single();
-
-  if (!data) return defaultContentProfile;
-
-  return {
-    tone: data.tone,
-    audience: data.audience,
-    brandVoice: data.brand_voice,
-    length: data.length,
-    formality: data.formality,
-    ctaStyle: data.cta_style,
-    topicsToAvoid: data.topics_to_avoid,
-    wordsToAvoid: data.words_to_avoid,
-    personalContext: data.personal_context,
-  };
-}
-
-export async function generateContent(
-  _prev: GenerateContentState,
-  formData: FormData,
-): Promise<GenerateContentState> {
-  const parsed = generateContentSchema.safeParse({
-    inputType: formData.get("inputType"),
-    title: formData.get("title") ?? "",
+function parseGenerateForm(formData: FormData) {
+  return generateContentSchema.safeParse({
+    promotionType: formData.get("promotionType"),
+    name: formData.get("name") ?? "",
     rawContent: formData.get("rawContent"),
-    sourceUrl: formData.get("sourceUrl") ?? "",
+    productUrl: formData.get("productUrl") ?? "",
+    repoUrl: formData.get("repoUrl") ?? "",
+    goal: formData.get("goal") || undefined,
     linkUrl: formData.get("linkUrl") ?? "",
     contentProfileId: formData.get("contentProfileId") ?? "",
     targetPlatforms: formData.getAll("targetPlatforms"),
+    anchorText: formData.get("anchorText") ?? "",
+    utmSource: formData.get("utmSource") ?? "",
+    utmMedium: formData.get("utmMedium") ?? "",
+    utmCampaign: formData.get("utmCampaign") ?? "",
+    aiProviderId: formData.get("aiProviderId") ?? "",
+    model: formData.get("model") ?? "",
   });
+}
 
+type ParsedGenerateForm = z.infer<typeof generateContentSchema>;
+
+/** Inserts the `campaigns` row (status starts draft) and an optional `campaign_links` row. */
+async function createCampaignRow(userId: string, parsed: ParsedGenerateForm, budgetType: BudgetType) {
+  const supabase = createAdminClient();
+
+  const { data: campaign, error } = await supabase
+    .from("campaigns")
+    .insert({
+      user_id: userId,
+      name: parsed.name || parsed.rawContent.slice(0, 80),
+      promotion_type: parsed.promotionType,
+      product_url: parsed.productUrl || null,
+      repo_url: parsed.repoUrl || null,
+      goal: (parsed.goal ?? "awareness") as CampaignGoal,
+      brief: parsed.rawContent,
+      content_profile_id: parsed.contentProfileId || null,
+      target_channels: parsed.targetPlatforms,
+      budget_type: budgetType,
+      status: "draft",
+      is_public: false,
+    })
+    .select("id, name")
+    .single();
+
+  if (error || !campaign) return null;
+
+  if (parsed.linkUrl) {
+    const trackedUrl = buildTrackedUrl(parsed.linkUrl, {
+      source: parsed.utmSource || undefined,
+      medium: parsed.utmMedium || undefined,
+      campaign: parsed.utmCampaign || undefined,
+    });
+    await supabase.from("campaign_links").insert({
+      campaign_id: campaign.id,
+      destination_url: parsed.linkUrl,
+      tracked_url: trackedUrl,
+      suggested_cta: parsed.anchorText || null,
+      utm_source: parsed.utmSource || null,
+      utm_medium: parsed.utmMedium || null,
+      utm_campaign: parsed.utmCampaign || null,
+    });
+  }
+
+  return campaign;
+}
+
+export async function generateCampaign(_prev: CreateCampaignState, formData: FormData): Promise<CreateCampaignState> {
+  const parsed = parseGenerateForm(formData);
   if (!parsed.success) {
     return { status: "error", error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
@@ -87,15 +108,16 @@ export async function generateContent(
   if (!userId) return { status: "error", error: "Not authenticated." };
   const supabase = createAdminClient();
 
-  const aiProvider = await loadDefaultAIProvider(userId);
+  const aiProvider = await loadSelectedAIProvider(userId, parsed.data.aiProviderId || undefined, parsed.data.model || undefined);
   if (!aiProvider) {
-    return {
-      status: "error",
-      error: "Connect an AI provider in Settings → AI providers before generating content.",
-    };
+    return { status: "error", error: "Connect an AI provider in BYOK before generating." };
   }
 
   const profile = await loadContentProfile(userId, parsed.data.contentProfileId || undefined);
+  const budgetType = parseBudgetType(formData.get("budgetType"));
+
+  const campaign = await createCampaignRow(userId, parsed.data, budgetType);
+  if (!campaign) return { status: "error", error: "Could not create the campaign." };
 
   const trackedLink = parsed.data.linkUrl
     ? buildTrackedUrl(parsed.data.linkUrl, {
@@ -105,69 +127,38 @@ export async function generateContent(
       })
     : undefined;
 
-  const { data: sourcePost, error: sourceError } = await supabase
-    .from("source_posts")
-    .insert({
-      user_id: userId,
-      input_type: parsed.data.inputType,
-      title: parsed.data.title || null,
-      raw_content: parsed.data.rawContent,
-      source_url: parsed.data.sourceUrl || null,
-    })
-    .select("id")
-    .single();
-
-  if (sourceError || !sourcePost) {
-    return { status: "error", error: "Could not save source content." };
-  }
-
-  const results: GeneratedPostView[] = [];
-
-  for (const platform of parsed.data.targetPlatforms) {
+  const briefs: CampaignBriefView[] = [];
+  for (const channel of parsed.data.targetPlatforms) {
     try {
       const content = await generateForPlatform({
         sourceContent: parsed.data.rawContent,
-        targetPlatform: platform,
+        targetPlatform: channel,
         profile,
         providerId: aiProvider.providerId,
         apiKey: aiProvider.apiKey,
         model: aiProvider.model,
+        baseUrl: aiProvider.baseUrl,
         linkUrl: trackedLink,
       });
 
-      const { data: generated, error: genError } = await supabase
-        .from("generated_posts")
+      const { data: brief, error } = await supabase
+        .from("campaign_briefs")
         .insert({
-          user_id: userId,
-          source_post_id: sourcePost.id,
-          platform,
+          campaign_id: campaign.id,
+          channel,
           content,
           status: "draft",
           ai_provider: aiProvider.providerId,
           ai_model: aiProvider.model,
         })
-        .select("id, platform, content, status")
+        .select("id, channel, content, status")
         .single();
 
-      if (genError || !generated) continue;
-      results.push(generated);
-
-      if (trackedLink && parsed.data.linkUrl) {
-        await supabase.from("backlinks").insert({
-          user_id: userId,
-          generated_post_id: generated.id,
-          canonical_url: parsed.data.linkUrl,
-          destination_url: trackedLink,
-          anchor_text: parsed.data.anchorText || parsed.data.linkUrl,
-          utm_source: parsed.data.utmSource || null,
-          utm_medium: parsed.data.utmMedium || null,
-          utm_campaign: parsed.data.utmCampaign || null,
-        });
-      }
+      if (!error && brief) briefs.push(brief);
     } catch (err) {
-      results.push({
-        id: `error-${platform}`,
-        platform,
+      briefs.push({
+        id: `error-${channel}`,
+        channel,
         content: err instanceof Error ? `Generation failed: ${err.message}` : "Generation failed.",
         status: "failed",
       });
@@ -175,153 +166,37 @@ export async function generateContent(
   }
 
   revalidatePath("/dashboard/create");
-  revalidatePath("/dashboard/posts");
-  return { status: "success", sourcePostId: sourcePost.id, posts: results };
+  revalidatePath("/dashboard/campaigns");
+  return { status: "success", campaignId: campaign.id, campaignName: campaign.name, briefs };
 }
 
-export interface RefineState {
-  status: "idle" | "success" | "error";
-  error?: string;
-  content?: string;
-}
-
-export async function refineGeneratedPost(postId: string, action: string): Promise<RefineState> {
-  const parsedAction = refineActionSchema.safeParse(action);
-  if (!parsedAction.success) return { status: "error", error: "Unknown action." };
+/** Skips AI entirely — saves what was typed as-is for each selected channel. Always available, BYOK or not. */
+export async function writeCampaignManually(_prev: CreateCampaignState, formData: FormData): Promise<CreateCampaignState> {
+  const parsed = parseGenerateForm(formData);
+  if (!parsed.success) {
+    return { status: "error", error: parsed.error.issues[0]?.message ?? "Invalid input." };
+  }
 
   const userId = await getCurrentUserId();
   if (!userId) return { status: "error", error: "Not authenticated." };
   const supabase = createAdminClient();
+  const budgetType = parseBudgetType(formData.get("budgetType"));
 
-  const { data: post } = await supabase
-    .from("generated_posts")
-    .select("id, platform, content")
-    .eq("id", postId)
-    .eq("user_id", userId)
-    .single();
-  if (!post) return { status: "error", error: "Post not found." };
+  const campaign = await createCampaignRow(userId, parsed.data, budgetType);
+  if (!campaign) return { status: "error", error: "Could not create the campaign." };
 
-  const aiProvider = await loadDefaultAIProvider(userId);
-  if (!aiProvider) return { status: "error", error: "No default AI provider configured." };
+  const briefs: CampaignBriefView[] = [];
+  for (const channel of parsed.data.targetPlatforms) {
+    const { data: brief, error } = await supabase
+      .from("campaign_briefs")
+      .insert({ campaign_id: campaign.id, channel, content: parsed.data.rawContent, status: "draft" })
+      .select("id, channel, content, status")
+      .single();
 
-  try {
-    const content = await refinePost({
-      content: post.content,
-      action: parsedAction.data,
-      targetPlatform: post.platform as PlatformId,
-      providerId: aiProvider.providerId,
-      apiKey: aiProvider.apiKey,
-      model: aiProvider.model,
-    });
-
-    await supabase.from("generated_posts").update({ content }).eq("id", postId);
-    revalidatePath("/dashboard/create");
-    return { status: "success", content };
-  } catch (err) {
-    return { status: "error", error: err instanceof Error ? err.message : "Refinement failed." };
-  }
-}
-
-export async function updateGeneratedPostContent(postId: string, content: string) {
-  const userId = await getCurrentUserId();
-  if (!userId) return;
-  const supabase = createAdminClient();
-
-  await supabase
-    .from("generated_posts")
-    .update({ content })
-    .eq("id", postId)
-    .eq("user_id", userId);
-  revalidatePath("/dashboard/posts");
-}
-
-export interface PublishState {
-  status: "idle" | "success" | "error";
-  error?: string;
-}
-
-export async function publishGeneratedPost(
-  postId: string,
-  accountId: string,
-  scheduledFor?: string,
-): Promise<PublishState> {
-  const userId = await getCurrentUserId();
-  if (!userId) return { status: "error", error: "Not authenticated." };
-  const supabase = createAdminClient();
-
-  const { data: post } = await supabase
-    .from("generated_posts")
-    .select("id, platform, content")
-    .eq("id", postId)
-    .eq("user_id", userId)
-    .single();
-  if (!post) return { status: "error", error: "Post not found." };
-
-  const { data: account } = await supabase
-    .from("connected_accounts")
-    .select("id, external_account_id, encrypted_access_token, status")
-    .eq("id", accountId)
-    .eq("user_id", userId)
-    .single();
-  if (!account) return { status: "error", error: "Account not found." };
-
-  if (scheduledFor) {
-    await supabase.from("scheduled_posts").insert({
-      user_id: userId,
-      generated_post_id: postId,
-      account_id: accountId,
-      scheduled_for: scheduledFor,
-    });
-    await supabase
-      .from("generated_posts")
-      .update({ status: "scheduled", account_id: accountId })
-      .eq("id", postId);
-    revalidatePath("/dashboard/posts");
-    return { status: "success" };
+    if (!error && brief) briefs.push(brief);
   }
 
-  const platform = getPlatform(post.platform as PlatformIdDb);
-  if (!platform.definition.capabilities.publish || !platform.publishPost) {
-    return {
-      status: "error",
-      error: `${platform.definition.name} doesn't support publishing through its API. Use Copy and paste it in manually.`,
-    };
-  }
-  if (account.status !== "connected" || !account.encrypted_access_token) {
-    return { status: "error", error: "This account needs to be reconnected before publishing." };
-  }
-
-  try {
-    const accessToken = decryptSecret(account.encrypted_access_token);
-    const result = await platform.publishPost(accessToken, {
-      platformAccountId: account.external_account_id ?? "",
-      content: post.content,
-    });
-
-    if (!result.success) {
-      await supabase
-        .from("generated_posts")
-        .update({ status: "failed", account_id: accountId })
-        .eq("id", postId);
-      return { status: "error", error: result.error ?? "Publishing failed." };
-    }
-
-    await supabase.from("published_posts").insert({
-      user_id: userId,
-      generated_post_id: postId,
-      account_id: accountId,
-      external_id: result.externalId,
-      external_url: result.externalUrl,
-    });
-    await supabase
-      .from("generated_posts")
-      .update({ status: "published", account_id: accountId })
-      .eq("id", postId);
-
-    revalidatePath("/dashboard/posts");
-    return { status: "success" };
-  } catch (err) {
-    await supabase.from("generated_posts").update({ status: "failed" }).eq("id", postId);
-    return { status: "error", error: err instanceof Error ? err.message : "Publishing failed." };
-  }
+  revalidatePath("/dashboard/create");
+  revalidatePath("/dashboard/campaigns");
+  return { status: "success", campaignId: campaign.id, campaignName: campaign.name, briefs };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Settings, LogOut } from "lucide-react";
+import { User, LogOut } from "lucide-react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@/components/ui/dropdown";
 import { logout } from "@/app/(auth)/actions";
 
@@ -25,9 +25,6 @@ export function UserMenu({ name, email }: { name: string; email: string }) {
         <div className="my-1 h-px bg-border" />
         <DropdownItem href="/dashboard/settings">
           <User className="size-4" /> Profile
-        </DropdownItem>
-        <DropdownItem href="/dashboard/settings">
-          <Settings className="size-4" /> Settings
         </DropdownItem>
         <div className="my-1 h-px bg-border" />
         <form action={logout}>

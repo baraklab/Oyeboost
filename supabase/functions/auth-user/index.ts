@@ -13,22 +13,42 @@ Deno.serve(async (req) => {
     if (!userId) return jsonResponse(401, { error: "Not authenticated." }, corsHeaders);
 
     const supabase = createServiceClient();
-    const { data: user, error } = await supabase
-      .from("users")
-      .select("id, first_name, last_name, email_id, verified, active")
-      .eq("id", userId)
-      .maybeSingle();
+    const [{ data: user, error }, { data: profile, error: profileError }] = await Promise.all([
+      supabase
+        .from("users")
+        .select("id, first_name, last_name, email_id, verified, active")
+        .eq("id", userId)
+        .maybeSingle(),
+      supabase.from("profiles").select("full_name, company_name, website_url").eq("id", userId).maybeSingle(),
+    ]);
 
-    if (error) {
-      console.error("auth-user: lookup failed", error);
+    if (error || profileError) {
+      console.error("auth-user: lookup failed", error ?? profileError);
       return jsonResponse(500, { error: "Something went wrong." }, corsHeaders);
     }
     if (!user || !user.active) return jsonResponse(401, { error: "Not authenticated." }, corsHeaders);
 
-    const name = [user.first_name, user.last_name].filter(Boolean).join(" ") || null;
+    // Display name: prefer the editable profile name, else first+last, else the
+    // first two words of first_name (covers a full name stored in that single field),
+    // else the email's local part. Kept here so header/profile stay in sync everywhere.
+    const fullName = profile?.full_name?.trim() || null;
+    const nameFromParts = user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : null;
+    const nameFromFirst = user.first_name?.trim().split(/\s+/).slice(0, 2).join(" ") || null;
+    const name = fullName || nameFromParts || nameFromFirst || user.email_id.split("@")[0];
+
     return jsonResponse(
       200,
-      { user: { id: String(user.id), name, email: user.email_id, verified: user.verified } },
+      {
+        user: {
+          id: String(user.id),
+          name,
+          email: user.email_id,
+          verified: user.verified,
+          fullName: profile?.full_name ?? "",
+          companyName: profile?.company_name ?? "",
+          websiteUrl: profile?.website_url ?? "",
+        },
+      },
       corsHeaders,
     );
   } catch (err) {
