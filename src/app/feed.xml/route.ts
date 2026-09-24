@@ -11,6 +11,10 @@ function fileSize(publicPath: string): number {
   }
 }
 
+function imageType(publicPath: string): string {
+  return /\.jpe?g$/i.test(publicPath) ? "image/jpeg" : "image/png";
+}
+
 function escapeXml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -39,7 +43,7 @@ export async function GET() {
       <dc:creator>${escapeXml(post.author)}</dc:creator>
       <category>${escapeXml(post.category)}</category>${post.tags.map((tag) => `
       <category>${escapeXml(tag)}</category>`).join("")}${image ? `
-      <enclosure url="${escapeXml(image)}" type="image/png" length="${fileSize(post.thumbnail ?? "")}" />` : ""}
+      <enclosure url="${escapeXml(image)}" type="${imageType(post.thumbnail ?? "")}" length="${fileSize(post.thumbnail ?? "")}" />` : ""}
       <pubDate>${pubDate}</pubDate>
     </item>`;
     })

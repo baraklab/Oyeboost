@@ -45,7 +45,7 @@ export const blogPosts: BlogPost[] = [
       "organic growth",
     ],
     readingTime: "9 min read",
-    thumbnail: "/images/blog/how-one-b2b-saas-founder-used-genuine-influencer-marketing-to-reach-10-paying-customers/two-to-ten-paying-customers-og.png",
+    thumbnail: "/images/blog/how-one-b2b-saas-founder-used-genuine-influencer-marketing-to-reach-10-paying-customers/two-to-ten-paying-customers-og.jpg",
     body: [
       {
         type: "text",
@@ -303,7 +303,7 @@ export const blogPosts: BlogPost[] = [
       "fake engagement",
     ],
     readingTime: "10 min read",
-    thumbnail: "/images/blog/why-cross-posting-tools-like-postiz-and-hootsuite-are-not-enough-to-grow/beyond-your-own-audience-og.png",
+    thumbnail: "/images/blog/why-cross-posting-tools-like-postiz-and-hootsuite-are-not-enough-to-grow/beyond-your-own-audience-og.jpg",
     body: [
       {
         type: "text",
@@ -537,7 +537,7 @@ export const blogPosts: BlogPost[] = [
     category: "Marketing",
     tags: ["fake engagement", "genuine marketing", "trust", "platform detection"],
     readingTime: "11 min read",
-    thumbnail: "/images/blog/why-fake-engagement-kills-your-launch-and-what-to-do-instead/bots-out-genuine-reach-in-og.png",
+    thumbnail: "/images/blog/why-fake-engagement-kills-your-launch-and-what-to-do-instead/bots-out-genuine-reach-in-og.jpg",
     body: [
       {
         type: "text",
@@ -702,7 +702,7 @@ export const blogPosts: BlogPost[] = [
     category: "Growth",
     tags: ["github stars", "open source", "influencer marketing", "developer marketing"],
     readingTime: "13 min read",
-    thumbnail: "/images/blog/how-to-get-genuine-github-stars-through-influencer-marketing/real-developers-real-stars-og.png",
+    thumbnail: "/images/blog/how-to-get-genuine-github-stars-through-influencer-marketing/real-developers-real-stars-og.jpg",
     body: [
       {
         type: "text",
@@ -926,7 +926,7 @@ export const blogPosts: BlogPost[] = [
     category: "Product",
     tags: ["saas launch", "influencer marketing", "product hunt", "campaigns"],
     readingTime: "12 min read",
-    thumbnail: "/images/blog/how-to-run-an-influencer-marketing-campaign-for-your-saas-launch/campaign-step-by-step-og.png",
+    thumbnail: "/images/blog/how-to-run-an-influencer-marketing-campaign-for-your-saas-launch/campaign-step-by-step-og.jpg",
     body: [
       {
         type: "text",
